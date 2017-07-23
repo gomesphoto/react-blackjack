@@ -2,8 +2,13 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import CardHand from "./components/CardHand";
 import Score from "./components/Score";
+import Result from "./components/Result";
 import Button from "./components/Button";
-import { newShuffledPokerDeck, getRandomFromArray } from "./helpers/cards";
+import {
+  newShuffledPokerDeck,
+  getRandomFromArray,
+  calculatePlayerScore
+} from "./helpers/cards";
 import { colors } from "./styles";
 
 const Wrapper = styled.div`
@@ -35,43 +40,59 @@ const ControlsRow = styled(Row)`
 
 class App extends Component {
   state = {
-    deckCards: newShuffledPokerDeck(),
+    deck: [],
     dealerCards: [],
-    playerCards: []
+    dealerScore: 0,
+    playerCards: [],
+    playerScore: 0,
+    showResult: false
   };
+
+  componentDidMount() {
+    this.onDealNew();
+  }
+
+  onDealNew = () => {
+    const newDeck = newShuffledPokerDeck();
+    const newDealerCards = [getRandomFromArray(newDeck)];
+    const newPlayerCards = [
+      getRandomFromArray(newDeck),
+      getRandomFromArray(newDeck)
+    ];
+    this.setState({
+      showResult: false,
+      deck: newDeck,
+      dealerCards: newDealerCards,
+      dealerScore: calculatePlayerScore(newDealerCards),
+      playerCards: newPlayerCards,
+      playerScore: calculatePlayerScore(newPlayerCards)
+    });
+  };
+
   onHitPlayer = () => {
-    console.log("prevState", this.state.playerCards);
-    console.log("newState", [
+    const newPlayerCards = [
       ...this.state.playerCards,
-      getRandomFromArray(this.state.deckCards)
-    ]);
+      getRandomFromArray(this.state.deck)
+    ];
     this.setState({
-      playerCards: [
-        ...this.state.playerCards,
-        getRandomFromArray(this.state.deckCards)
-      ]
+      showResult: true,
+      playerCards: newPlayerCards,
+      playerScore: calculatePlayerScore(newPlayerCards)
     });
   };
+
   onHitDealer = () => {
-    console.log("prevState", this.state.dealerCards);
-    console.log("newState", [
+    const newDealerCards = [
       ...this.state.dealerCards,
-      getRandomFromArray(this.state.deckCards)
-    ]);
+      getRandomFromArray(this.state.deck)
+    ];
     this.setState({
-      dealerCards: [
-        ...this.state.dealerCards,
-        getRandomFromArray(this.state.deckCards)
-      ]
+      showResult: true,
+      dealerCards: newDealerCards,
+      dealerScore: calculatePlayerScore(newDealerCards),
     });
   };
-  onNewDeal = () => {
-    this.setState({
-      deckCards: newShuffledPokerDeck(),
-      dealerCards: [],
-      playerCards: []
-    });
-  };
+
   render() {
     return (
       <Wrapper>
@@ -80,17 +101,18 @@ class App extends Component {
             <CardHand cards={this.state.dealerCards} />
           </Row>
           <Row>
-            <Score label={"Dealer"} cards={this.state.dealerCards} />
-            <Score label={"Player"} cards={this.state.playerCards} />
+            <Score label={"Dealer"} score={this.state.dealerScore} />
+            <Result
+              show={this.state.showResult}
+              dealer={this.state.dealerScore}
+              player={this.state.playerScore}
+            />
+            <Score label={"Player"} score={this.state.playerScore} />
           </Row>
           <ControlsRow>
-            <Button label={"Deal"} type={"info"} onClick={this.onNewDeal} />
+            <Button label={"Deal"} type={"info"} onClick={this.onDealNew} />
             <Button label={"Hit"} type={"danger"} onClick={this.onHitPlayer} />
-            <Button
-              label={"Stand"}
-              type={"success"}
-              onClick={this.onHitDealer}
-            />
+            <Button label={"Stick"} type={"success"} onClick={this.onHitDealer} />
           </ControlsRow>
           <Row>
             <CardHand cards={this.state.playerCards} />
