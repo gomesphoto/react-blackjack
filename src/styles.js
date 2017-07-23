@@ -31,8 +31,9 @@ export const transitions = {
 export const globalStyles = `
   @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
 
-  html, body {
+  html, body, #root {
     width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
   }
@@ -41,7 +42,7 @@ export const globalStyles = `
     font-family: Lato, sans-serif;
     font-weight: 400;
     font-size: ${fonts.medium};
-    color: ${colors.dark};
+    color: rgb(${colors.dark});
     position: relative;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-font-smoothing: antialiased;

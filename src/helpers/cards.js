@@ -1,8 +1,8 @@
 import shuffle from "shuffle-array";
 
-const suits = ["", "", "", ""];
+const suits = ["clubs", "diamond", "heart", "spade"];
 const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
-const colors = { "": "black", "": "red", "": "red", "": "black" };
+const colors = { clubs: "black", diamond: "red", heart: "red", spade: "black" };
 
 export const card = (value, suit) => ({
   face: value + suit,
@@ -42,3 +42,6 @@ export const calculatePlayerScore = cards => {
 
   return score;
 };
+
+export const getRandomFromArray = array =>
+  array[Math.floor(Math.random() * array.length)];

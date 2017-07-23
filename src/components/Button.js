@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { colors } from "./styles";
+import { colors } from "../styles";
 
 const StyledButton = styled.div`
   background-color: ${({ type }) => {
@@ -23,8 +23,18 @@ const StyledButton = styled.div`
       return `rgba(${colors.blue}, 0.5)`;
     }
   }};
-  border-radius: 50%;
   color: rgb(${colors.white});
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 const Button = ({ label, type, ...props }) =>
