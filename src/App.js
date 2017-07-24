@@ -70,9 +70,12 @@ class App extends Component {
   };
 
   onHitPlayer = () => {
+    const {  playerCards, playerScore, deck, dealerScore } = this.state;
+    if (playerScore >= 21 || (dealerScore > playerScore && dealerScore <= 21))
+      return null;
     const newPlayerCards = [
-      ...this.state.playerCards,
-      getRandomFromArray(this.state.deck)
+      ...playerCards,
+      getRandomFromArray(deck)
     ];
     this.setState({
       showResult: true,
@@ -82,9 +85,12 @@ class App extends Component {
   };
 
   onHitDealer = () => {
+    const {  dealerCards, deck, dealerScore } = this.state;
+    if (dealerScore >= 21)
+      return null;
     const newDealerCards = [
-      ...this.state.dealerCards,
-      getRandomFromArray(this.state.deck)
+      ...dealerCards,
+      getRandomFromArray(deck)
     ];
     this.setState({
       showResult: true,

@@ -12,7 +12,7 @@ const StyledCardHand = styled.div`
 
 const CardHand = ({ cards, ...props }) =>
   <StyledCardHand {...props}>
-    {cards.map(card => <Card key={card.face} card={card} />)}
+    {cards.map((card, idx) => <Card key={`${card.face}-${idx}`} card={card} />)}
   </StyledCardHand>;
 
 CardHand.propTypes = {
