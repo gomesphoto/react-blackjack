@@ -16,7 +16,10 @@ const CardHand = ({ cards, ...props }) =>
   </StyledCardHand>;
 
 CardHand.propTypes = {
-  cards: PropTypes.array.isRequired
+  cards: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ]).isRequired
 };
 
 export default CardHand;
